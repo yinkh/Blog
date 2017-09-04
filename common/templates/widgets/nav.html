@@ -1,0 +1,100 @@
+{% url 'news-view' as news_url %}
+
+
+<div class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target=".navbar-responsive-collapse">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'index' %}">{{ website_title }}</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{% url 'index' %}">
+                        <span class="glyphicon glyphicon-home"></span>
+                        首页
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'article_all' %}">
+                        <span class="glyphicon glyphicon-globe"></span>
+                        全部文章
+                    </a>
+                </li>
+
+                {% if nav_list %}
+                    {% for nav in nav_list %}
+                        <li>
+                            <a href="{{ nav.url }}"> {{ nav.name }} </a>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if not request.user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'user_login' %}" style="cursor:pointer;">登陆</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user_register' %}" style="cursor:pointer">注册</a>
+                    </li>
+                {% else %}
+                    <li class="dropdown">
+                        <a href="#" style="padding:5px;" data-toggle="dropdown">
+                            <img src="{{ request.user.get_portrait }}" class="img-circle" alt="" width="45px">
+                            {{ request.user.username }}
+                            <span class="badge" style="background-color: #D94600;">{{ notification_count }}</span>
+                        </a>
+                        <ul class="dropdown-menu navbar-right">
+                            {% if can_add_article %}
+                                <li>
+                                    <a href="{% url 'article_create' %}">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        新增博客
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="{% url 'user_portrait' %}">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    更改头像
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'user_change_pwd' %}">
+                                    <span class="glyphicon glyphicon-lock"></span>
+                                    更改密码
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'user_notification' %}">
+                                    <span class="glyphicon glyphicon-envelope"></span>
+                                    消息
+                                    <span class="badge"
+                                          style="background-color: #D94600;">{{ notification_count }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'user_logout' %}">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+

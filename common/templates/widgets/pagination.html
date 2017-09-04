@@ -1,0 +1,96 @@
+{% if page_obj %}
+    {% if  page_obj.paginator.num_pages > 1 %}
+        <ul class="pagination">
+            {% if  page_obj.has_previous %}
+                <li><a onclick="skipPage({{ page_obj.previous_page_number }})">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><a href="#">&laquo;</a></li>
+            {% endif %}
+
+            {% if  page_obj.number > 4 %}
+                <li><a href="?page=1">1</a></li>
+                <li><span>…</span>
+                <li>
+                    <a onclick="skipPage({{ page_obj.previous_page_number|add:"-1" }})">{{ page_obj.previous_page_number|add:"-1" }}</a>
+                </li>
+                <li>
+                    <a onclick="skipPage({{ page_obj.previous_page_number }})">{{ page_obj.previous_page_number }}</a>
+                </li>
+            {% elif page_obj.number == 4 %}
+                <li><a onclick="skipPage(1)">1</a></li>
+                <li>
+                    <a onclick="skipPage({{ page_obj.previous_page_number|add:"-1" }})">{{ page_obj.previous_page_number|add:"-1" }}</a>
+                </li>
+                <li>
+                    <a onclick="skipPage({{ page_obj.previous_page_number }})">{{ page_obj.previous_page_number }}</a>
+                </li>
+            {% elif page_obj.number == 3 %}
+                <li>
+                    <a onclick="skipPage({{ page_obj.previous_page_number|add:"-1" }})">{{ page_obj.previous_page_number|add:"-1" }}</a>
+                </li>
+                <li>
+                    <a onclick="skipPage({{ page_obj.previous_page_number }})">{{ page_obj.previous_page_number }}</a>
+                </li>
+            {% elif page_obj.number == 2 %}
+                <li>
+                    <a onclick="skipPage({{ page_obj.previous_page_number }})">{{ page_obj.previous_page_number }}</a>
+                </li>
+            {% endif %}
+
+
+            <li class="active"><a onclick="skipPage({{ page_obj.number }})">{{ page_obj.number }}</a></li>
+
+            {% if  page_obj.paginator.num_pages > page_obj.number|add:"3" %}
+                <li><a onclick="skipPage({{ page_obj.next_page_number }})">{{ page_obj.next_page_number }}</a></li>
+                <li>
+                    <a onclick="skipPage({{ page_obj.next_page_number|add:"1" }})">{{ page_obj.next_page_number|add:"1" }}</a>
+                </li>
+                <li><span>…</span></li>
+                <li><a onclick="skipPage({{ page_obj.paginator.num_pages }})">{{ page_obj.paginator.num_pages }}</a>
+                </li>
+            {% elif page_obj.paginator.num_pages == page_obj.number|add:"3" %}
+                <li><a onclick="skipPage({{ page_obj.next_page_number }})">{{ page_obj.next_page_number }}</a></li>
+                <li>
+                    <a onclick="skipPage({{ page_obj.next_page_number|add:"1" }})">{{ page_obj.next_page_number|add:"1" }}</a>
+                </li>
+                <li><a onclick="skipPage({{ page_obj.paginator.num_pages }})">{{ page_obj.paginator.num_pages }}</a>
+                </li>
+            {% elif page_obj.paginator.num_pages == page_obj.number|add:"2" %}
+                <li><a onclick="skipPage({{ page_obj.next_page_number }})">{{ page_obj.next_page_number }}</a></li>
+                <li>
+                    <a onclick="skipPage({{ page_obj.next_page_number|add:"1" }})">{{ page_obj.next_page_number|add:"1" }}</a>
+                </li>
+            {% elif page_obj.paginator.num_pages == page_obj.number|add:"1" %}
+                <li><a onclick="skipPage({{ page_obj.next_page_number }})">{{ page_obj.next_page_number }}</a></li>
+            {% endif %}
+
+            {% if  page_obj.has_next %}
+                <li><a onclick="skipPage({{ page_obj.next_page_number }})">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><a href="#">&raquo;</a></li>
+            {% endif %}
+        </ul>
+
+        <script>
+            var addUrlParam = function (search, key, val) {
+                var newParam = key + '=' + val, params = '?' + newParam;
+                // If the "search" string exists, then build params from it
+                if (search) {
+                    // Try to replace an existance instance
+                    params = search.replace(new RegExp('([?&])' + key + '[^&]*'), '$1' + newParam);
+                    // If nothing was replaced, then add the new param to the end
+                    if (params === search) {
+                        params += '&' + newParam;
+                    }
+                }
+                return params;
+            };
+
+            function skipPage(page) {
+                if (page <= {{ page_obj.paginator.num_pages }}) {
+                    location.replace(addUrlParam(document.location.search, 'page', page));
+                }
+            }
+        </script>
+    {% endif %}
+{% endif %}

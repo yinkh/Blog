@@ -1,0 +1,585 @@
+html, body {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+body {
+    font-family: "Microsoft YaHei", "WenQuanYi Micro Hei", "tohoma,sans-serif";
+    color: #6B6B6B;
+    font-size: 12px;
+    background: url('../images/bg.jpg') repeat scroll 0% 0% transparent;
+}
+
+header {
+    font-size: 14px;
+}
+
+/*使footer置于底部*/
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#main {
+    position: relative;
+    min-height: 100%;
+    _height: 100%; /* for ie6 因为ie6不支持min-height */
+}
+
+#content {
+    padding-bottom: 40px; /* 不至被footer盖住 */
+}
+
+.footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    background: #ecf0f5;
+    padding: 15px;
+    color: #444;
+    border-top: 1px solid #d2d6de;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: "Microsoft YaHei", "WenQuanYi Micro Hei", "tohoma,sans-serif";
+    font-weight: 700;
+}
+
+a {
+    color: #4C4C4C;
+}
+
+a:focus {
+    color: #D9534F;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #D9534F;
+    text-decoration: none;
+}
+
+.display-none {
+    display: none;
+}
+
+.header.navbar {
+    font-size: 14px;
+}
+
+.well {
+    background-color: #FFF;
+    box-shadow: 0px 0px 20px #222;
+}
+
+.padding10 {
+    padding: 10px;
+}
+
+.margin4 {
+    margin: 4px;
+}
+
+/*向左移动20px*/
+.left20px {
+    margin-left: -20px;
+}
+
+/*下滑线*/
+.underline {
+    border-bottom: 1px solid #eee;
+}
+
+/*标签样式*/
+.label-vmaig {
+    background-color: #D94600;
+}
+
+.label-vmaig {
+    background-color: #D94600;
+}
+
+/*按钮样式*/
+.btn-vmaig {
+    color: #FFF;
+    background-color: #D9534F;
+    border-color: #D43F3A;
+}
+
+/*form样式*/
+.no-margin {
+    margin: 0 !important;
+}
+
+/*警告框样式*/
+.alert-vmaig {
+    color: #8A6D3B;
+    background-color: #FCF8E3;
+    border-color: #FAEBCC;
+    margin-bottom: 5px;
+}
+
+/*panel 样式*/
+.panel-vmaig {
+    box-shadow: 0px 0px 5px #C2C2C2;
+    border-color: #EEE;
+}
+
+.panel-vmaig .panel-heading {
+    color: #EEE;
+    background-color: #3c8dbc;
+    border-color: #EEE;
+}
+
+.panel-vmaig .input-group-addon {
+    color: #EEE;
+    background-color: #3c8dbc;
+    border: 2px solid #3D4450;
+}
+
+.panel-vmaig .badge {
+    background-color: #D94600;
+}
+
+.panel-vmaig span.btn {
+    padding: 0px;
+    margin-right: 5px;
+}
+
+/*对话框样式标签*/
+.pre-cat {
+    float: left;
+    margin-right: 10px;
+    margin-top: 8px;
+    position: relative;
+}
+
+.pre-catinner {
+    background-color: #D94600;
+    padding: 4px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #EEE;
+}
+
+.pre-catarrow {
+    position: absolute;
+    height: 0px;
+    width: 0px;
+    font-size: 0px;
+    line-height: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-image: none;
+    right: -8px;
+    top: 10px;
+    border-color: transparent transparent transparent #D94600;
+}
+
+/****************/
+
+/* home post块内容 */
+.home-post {
+    position: relative;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    display: block;
+}
+
+.home-post .post-title {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.home-post .post-title > h1 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 20px;
+    height: 30px;
+    line-height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.home-post .post-tag {
+    text-align: center;
+    line-height: 24px;
+    margin: 20px;
+}
+
+.home-post .post-content {
+    padding: 0 0;
+    font-size: 14px;
+}
+
+.home-post .post-content .thumbnail {
+    border: 1px solid #fff;
+    padding: 0px;
+}
+
+.home-post .post-info {
+    margin-top: 15px;
+}
+
+.home-post .post-info > span {
+    margin-right: 5px;
+}
+
+.home-post .post-info .post-tags {
+    float: right;
+}
+
+/***********************************/
+
+/*form中label必填 选填样式*/
+.required {
+    color: #686669;
+}
+
+/***********************************/
+
+/* all-article 块内容*/
+.all-article {
+}
+
+.all-article .article-title {
+    margin-bottom: 10px;
+}
+
+.all-article .article-tags {
+    float: right;
+    margin-top: 5px;
+}
+
+.all-article .article-title h1 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 3px;
+    font-size: 20px;
+    height: 30px;
+    line-height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.all-article .article-title > .post-tags {
+    float: right;
+}
+
+.all-article .article-content .thumbnail {
+    border: 1px solid #fff;
+    padding: 0;
+}
+
+.all-article .article-info {
+    float: right;
+}
+
+/**************************/
+
+/*首页右侧的 search 样式*/
+.search {
+    border-radius: 4px;
+    color: #FFF;
+    background-color: #3c8dbc;
+    border-color: #3c8dbc;
+    box-shadow: 0px 0px 5px #C2C2C2;
+}
+
+.search input {
+    width: 80% !important;
+    float: left;
+    margin-right: 5px;
+}
+
+/*************************/
+
+/*首页右侧的 热门文章面板样式*/
+.hotest-post-title {
+    display: inline-block;
+    overflow: hidden;
+    width: 80%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/*首页右侧的分类面板*/
+.pills-vmaig {
+    padding: 10px;
+    border-bottom: 1px solid #EEE;
+}
+
+.tab-content {
+    padding: 10px;
+}
+
+.tab-content .label {
+    display: block;
+    float: left;
+    margin: 5px;
+}
+
+.navbar-vmaig {
+    background: #3c8dbc;
+}
+
+.navbar-vmaig .navbar-brand {
+    font-weight: bold;
+    font-size: 25px;
+    margin-right: 10px;
+    color: #3c8dbc;
+    text-shadow: 1px 2px 5px rgba(255, 255, 255, 0.1), 0px 0px 30px rgba(255, 255, 255, 0.125);
+}
+
+.navbar-vmaig .navbar-text {
+    margin: 30px 0px 0px 0px;
+    font-weight: bold;
+    color: #3c8dbc;
+    text-shadow: 1px 2px 5px rgba(255, 255, 255, 0.1), 0px 0px 30px rgba(255, 255, 255, 0.125);
+}
+
+/************************/
+
+/*all页面中 tool面板的样式*/
+.tags {
+    margin-top: 5px;
+}
+
+.tags label {
+    display: inline-block;
+    padding: 1px 10px;
+    margin: 0 3px 5px 0;
+    font-size: 14px;
+    border-radius: 2px;
+}
+
+.tags label:hover {
+    background: none repeat scroll 0% 0% #EEE;
+}
+
+.tags label.active:hover {
+    background: #D94600;
+}
+
+.tags .active {
+    background: #D94600;
+    color: #FFF;
+}
+
+.sort {
+    padding-bottom: 15px;
+    font-size: 13px
+}
+
+.sort label {
+    margin-right: 10px;
+}
+
+/***********************/
+
+/*******缺省页*********/
+.default-content {
+    width: 80%;
+    height: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+}
+
+.default-content img {
+    height: 400px;
+    margin: 0 auto;
+}
+
+@media screen AND (min-height: 800px) {
+    .default-content img {
+        height: 400px;
+    }
+}
+
+@media screen AND (max-height: 799px) AND (min-height: 500px) {
+    .default-content img {
+        height: 200px;
+    }
+}
+
+@media screen AND (max-height: 499px) {
+    .default-content img {
+        height: 150px;
+    }
+}
+
+/*文章中内容的样式******/
+.article-content img {
+    max-width: 100%;
+}
+
+.article-title h1 {
+    font-size: 20px
+}
+
+/***********************/
+
+/*轮播*/
+
+#myCarousel {
+    margin-bottom: 20px;
+}
+
+.carousel-indicators {
+    left: 100%;
+    width: 30%;
+}
+
+/***********************/
+
+/***********************/
+
+.screen-tx {
+    width: 400px;
+    height: 300px;
+    background: #e2e2e2;
+}
+
+/*********************/
+
+#links a {
+    margin-bottom: 5px;
+}
+
+/*——————————————
+TimeLine CSS
+时间线 version页面使用
+———————————————*/
+/* Base */
+section.timeline-outer {
+    width: 80%;
+    margin: 0 auto;
+}
+
+h1.header {
+    text-align: center;
+    font-size: 50px;
+    line-height: 70px;
+}
+
+/* Timeline */
+.timeline {
+    border-left: 8px solid #42A5F5;
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    color: #333;
+    margin: 50px auto;
+    letter-spacing: 0.5px;
+    position: relative;
+    line-height: 1.4em;
+    padding: 20px;
+    list-style: none;
+    text-align: left;
+}
+
+.timeline h1,
+.timeline h2,
+.timeline h3 {
+    font-size: 1.4em;
+}
+
+.timeline .event {
+    border-bottom: 1px solid rgba(160, 160, 160, 0.2);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.timeline .event:last-of-type {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border: none;
+}
+
+.timeline .event:before,
+.timeline .event:after {
+    position: absolute;
+    display: block;
+    top: 0;
+}
+
+.timeline .event:before {
+    left: -177.5px;
+    color: #212121;
+    content: attr(data-date);
+    text-align: right;
+    /*  font-weight: 100;*/
+
+    font-size: 16px;
+    min-width: 120px;
+}
+
+.timeline .event:after {
+    box-shadow: 0 0 0 8px #42A5F5;
+    left: -30px;
+    background: #212121;
+    border-radius: 50%;
+    height: 11px;
+    width: 11px;
+    content: "";
+    top: 5px;
+}
+
+/**/
+/*——————————————
+Responsive Stuff
+———————————————*/
+
+@media (max-width: 945px) {
+    .timeline .event::before {
+        left: 0.5px;
+        top: 20px;
+        min-width: 0;
+        font-size: 13px;
+    }
+
+    .timeline h3 {
+        font-size: 16px;
+    }
+
+    .timeline p {
+        padding-top: 20px;
+    }
+
+    section.lab h3.card-title {
+        padding: 5px;
+        font-size: 16px
+    }
+}
+
+@media (max-width: 768px) {
+    .timeline .event::before {
+        left: 0.5px;
+        top: 20px;
+        min-width: 0;
+        font-size: 13px;
+    }
+
+    .timeline .event:nth-child(1)::before,
+    .timeline .event:nth-child(3)::before,
+    .timeline .event:nth-child(5)::before {
+        top: 38px;
+    }
+
+    .timeline h3 {
+        font-size: 16px;
+    }
+
+    .timeline p {
+        padding-top: 20px;
+    }
+}

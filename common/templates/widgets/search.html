@@ -1,0 +1,18 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-search"></span>
+            搜索文章
+            <span class="glyphicon glyphicon-chevron-up  panel-collapse" style="margin-left:45%;padding: 0px"
+                  data-toggle="collapse" data-target="#search"></span>
+            <span class="glyphicon glyphicon-remove  panel-close" style="padding: 0px"></span>
+        </h3>
+    </div>
+    <div id="search" class="" style="padding-left: 10px;padding-right: 10px">
+        <form class="form-group label-floating" role="form" method="get" action="{% url 'article_index' %}">
+            <label class="control-label" for="focusedInput2">博客名、标签、摘要</label>
+            <input type="text" class="form-control" id="search" name="search"
+                   {% if search %}value={{ search }}{% endif %}>
+        </form>
+    </div>
+</div>

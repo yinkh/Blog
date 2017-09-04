@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+
+{% load admin_static %}
+{% block blockbots %}
+    {{ block.super }}
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/responsive.css' %}"/>
+    <link rel="shortcut icon" href="{% static 'blog/images/favicon.ico' %}"/>
+    <link rel="bookmark" href="{% static 'blog/images/favicon.ico' %}"/>
+{% endblock %}
+
+{% block title %}{{ title }} | {{ 'Dreamgo Blog' }}{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ 'Dreamgo Blog' }}</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title> {{ news.title|slice:'6' }} | {{ website_title|default_if_none:'' }}</title>
+{% endblock %}
+
+{% block main %}
+
+    <div id="news-page" class="well">
+        <ol class="breadcrumb">
+            <li><a href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span></a></li>
+            <li>
+                <a href="{% url 'news_index' %}">
+                    新闻
+                </a>
+            </li>
+            <li class="hidden-xs">
+                <a>
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    {{ news.publish_time }}
+                </a>
+            </li>
+            <li class="pull-right">
+                <span class="glyphicon glyphicon-paperclip"></span> {{ news.source }}
+            </li>
+        </ol>
+
+        <div id="news">
+            <div>
+                <h1>{{ news.title }}</h1>
+                <a href="{{ news.url }}" target="_blank" >
+                    <span class="glyphicon glyphicon-link"></span> {{ news.url }}
+                </a>
+            </div>
+            <hr/>
+
+            <div>
+                {{ news.summary|safe }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "user/user_base.html" %}
+
+{% block title %}
+     <title> 登陆 | {{ website_title|default_if_none:'' }}</title>
+{% endblock %}
+
+{% block content %}
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="{% url 'index' %}">{{ website_title|default_if_none:'' }}</a>
+        </div>
+
+        <div class="login-box-body">
+            <form method="post" action="{% url 'user_login' %}" class="form">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group no-margin {% if field.errors %} has-error {% endif %}">
+
+                        <label class="control-label" for="{{ field.id_for_label }}">
+                            <b>{{ field.label }}</b>
+                            {% if message %}
+                                {% ifequal field.name 'username' %}{{ message }}{% endifequal %}
+                            {% endif %}
+                            {% if field.errors %}
+                                {{ field.errors.as_text }}
+                                {% ifequal field.errors.as_text '* 账户未激活' %}
+                                    <a href="{% url 'user_login' %}?active_email={{ form.active_email }}">
+                                        发送激活邮件
+                                    </a>
+                                {% endifequal %}
+                            {% endif %}
+                        </label>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <button id="btn_login" type="submit" style="width: 100%"
+                                class="btn btn-raised btn-primary">登陆
+                        </button>
+                    </div>
+
+                    <div class="col-md-6">
+                        <button type="button" onclick="location.href='{% url 'user_register' %}'"
+                                style="width: 100%" class="btn btn-raised btn-info">注册
+                        </button>
+                    </div>
+                </div>
+                <div class="social-auth-links text-right form-group">
+                    <a href="{% url 'user_forget_pwd' %}">忘记密码</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+

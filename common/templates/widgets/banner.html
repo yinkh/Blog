@@ -1,0 +1,59 @@
+<div id="carousel_page" class="carousel slide" data-ride="carousel" style="margin-bottom: 10px">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        {% for banner in banner_list %}
+            {% if forloop.first %}
+                <li data-target="#carousel_page" data-slide-to="0" class="active"></li>
+            {% else %}
+                <li data-target="#carousel_page" data-slide-to="{{ forloop.counter0 }}"></li>
+            {% endif %}
+        {% endfor %}
+    </ol>
+
+    <!-- 轮播（Carousel）项目 -->
+    <div class="carousel-inner">
+        {% for banner in banner_list %}
+            <div class="item {% if forloop.first %} active {% endif %} ">
+                <a href="{% url 'article_detail' banner.article.id %}">
+                    <img class="carousel_img"
+                         data-img-lg="{{ banner.img.url }}"
+                         data-img-xs="{{ banner.img_xs.url }}"
+                         style="overflow: hidden;min-height: 300px;width:100%;"
+                         alt="{{ banner.title }}">
+
+                    <div class="carousel-caption">
+                        <h3>{{ banner.title }}</h3>
+                        <p>{{ banner.sub_title }}</p>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- 轮播（Carousel）导航 -->
+    <a class="left carousel-control" href="#carousel_page" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel_page" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<script>
+    function selectImg() {
+        var screenWidth = $(window).width();
+        var isPhone = screenWidth < 768;
+        $("#carousel_page .carousel-inner .item .carousel_img").each(function (index, carousel_img) {
+            //因为传递的item是dom对象，要把dom对象改为jQuery对象
+            var $carousel_img = $(carousel_img);
+            var screenWidth = $(window).width();
+            var isPhone = screenWidth < 768;
+            if (isPhone) {
+                carousel_img.src = $carousel_img.data('img-xs');
+            } else {
+                carousel_img.src = $carousel_img.data('img-lg');
+            }
+        });
+    }
+    $(window).on('resize', selectImg).trigger('resize');
+</script>

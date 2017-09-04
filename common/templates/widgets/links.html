@@ -1,0 +1,19 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <span class="glyphicon glyphicon-link"></span>
+                友情链接
+            <span class="glyphicon glyphicon-chevron-up  panel-collapse" style="margin-left:45%;padding: 0px"
+                data-toggle="collapse" data-target="#links"></span>
+            <span class="glyphicon glyphicon-remove  panel-close" style="padding: 0px"></span>
+        </h3>
+    </div>
+    <div id="links" class="list-group collapse in" style="padding-bottom: 6px">
+        {% for link in links %}
+        <div class="list-group-item"  style="margin: 6px">
+            <a target="_blank" href="{{link.url}}"
+               class="label label-{{link.color}}">{{link.name}}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>

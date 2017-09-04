@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>500 | {{ website_title|default_if_none:'' }}</title>
+{% endblock %}
+
+
+{% block main %}
+    <div class="default-content">
+        <div class="default-img">
+            <img src="/static/blog/images/500.png" alt="" class="img-responsive">
+        </div>
+        <div class="default-text">
+            <h2>
+                服务器发生错误
+            </h2>
+        </div>
+    </div>
+{% endblock %}

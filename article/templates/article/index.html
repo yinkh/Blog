@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+     <title> 文章 | {{ website_title|default_if_none:'' }}</title>
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div id="vmaig-content" class="col-md-8 col-lg-9">
+            <div class="panel visible-xs" style="padding-left: 10px;padding-right: 10px">
+                <form class="form" role="form" method="get" action="{% url 'article_index' %}">
+                    <input type="text" class="form-control" id="search" name="search" placeholder="搜索"
+                           {% if search %}value={{ search }}{% endif %}>
+                </form>
+            </div>
+
+            <!-- 首页文章列表 -->
+            <div id="home-post-list" class="well">
+                <!--首页文章列表 -->
+                {% if article_list %}
+                    {% for article in article_list %}
+                        {% include "article/article_item.html" %}
+                    {% endfor %}
+                {% else %}
+                    暂无相关博客
+                {% endif %}
+            </div>
+            <!--分页 -->
+            {% include "widgets/pagination.html" %}
+        </div>
+
+        <!-- 右边的widgets -->
+        <div id="vmaig-side" class="col-md-4 col-lg-3 hidden-xs">
+            {% include "widgets/tags_cloud.html" %}
+            {% include "widgets/search.html" %}
+            {% include "widgets/hotest_posts.html" %}
+            {% include "widgets/latest_comments.html" %}
+            {% include "widgets/links.html" %}
+        </div>
+    </div>
+{% endblock %}

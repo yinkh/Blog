@@ -1,0 +1,166 @@
+{% extends "common/../../../common/templates/base.html" %}
+
+{% block title %}
+    <title> {{ article.title|slice:'6' }} | {{ website_title|default_if_none:'' }}</title>
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div id="vmaig-content" class="well col-md-8 col-lg-9" style="overflow:auto">
+
+            <form class="form" enctype="multipart/form-data" action="{% url 'article_update' article.id %}"
+                  method="post">
+                {% csrf_token %}
+                {{ form.media }}
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group no-margin {% if form.title.errors %} has-error {% endif %}">
+                            <label class="control-label" for="{{ form.title.id_for_label }}">
+                                <b {% if form.title.field.required %}class="required"{% endif %}>
+                                    {{ form.title.label }}
+                                </b>
+                                {{ form.title.help_text }}
+                                {% if form.title.errors %} {{ form.title.errors.as_text }} {% endif %}
+                            </label>
+                            {{ form.title }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="form-group no-margin {% if form.is_public.errors %} has-error {% endif %}">
+                            <label class="control-label {% if form.is_public.required %}required{% else %}not_required{% endif %}"
+                                   for="{{ form.is_public.id_for_label }}">
+                                <b {% if form.is_public.field.required %}class="required"{% endif %}>
+                                    {{ form.is_public.label }}
+                                </b>
+                                {{ form.is_public.help_text }}
+                                {% if form.is_public.errors %} {{ form.is_public.errors.as_text }} {% endif %}
+                            </label>
+
+                            <div class="togglebutton">
+                                <label>
+                                    {{ form.is_public }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group no-margin {% if form.is_top.errors %} has-error {% endif %}">
+                            <label class="control-label" for="{{ form.is_top.id_for_label }}">
+                                <b {% if form.is_top.field.required %}class="required"{% endif %}>
+                                    {{ form.is_top.label }}
+                                </b>
+                                {{ form.is_top.help_text }}
+                                {% if form.is_top.errors %} {{ form.is_top.errors.as_text }} {% endif %}
+                            </label>
+
+                            <div class="togglebutton">
+                                <label>
+                                    {{ form.is_top }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group no-margin {% if form.publish_time.errors %} has-error {% endif %}">
+                            <label class="control-label" for="{{ form.publish_time.id_for_label }}">
+                                <b {% if form.publish_time.field.required %}class="required"{% endif %}>
+                                    {{ form.publish_time.label }}
+                                </b>
+                                {{ form.publish_time.help_text }}
+                                {% if form.publish_time.errors %} {{ form.publish_time.errors.as_text }} {% endif %}
+                            </label>
+                            {{ form.publish_time }}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group no-margin {% if form.category.errors %} has-error {% endif %}">
+                            <label class="control-label" for="{{ form.category.id_for_label }}">
+                                <b {% if form.category.field.required %}class="required"{% endif %}>
+                                    {{ form.category.label }}</b> {% if form.category.errors %}
+                                {{ form.category.errors.as_text }} {% endif %}
+                            </label>
+                            {{ form.category }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group no-margin {% if form.status.errors %} has-error {% endif %}">
+                            <label class="control-label" for="{{ form.status.id_for_label }}">
+                                <b {% if form.status.field.required %}class="required"{% endif %}>
+                                    {{ form.status.label }}
+                                </b>
+                                {{ form.status.help_text }}
+                                {% if form.status.errors %} {{ form.status.errors.as_text }} {% endif %}
+                            </label>
+                            {{ form.status }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group no-margin {% if form.tags.errors %} has-error {% endif %}">
+                            <label class="control-label" for="{{ form.tags.id_for_label }}">
+                                <b {% if form.tags.field.required %}class="required"{% endif %}>
+                                    {{ form.tags.label }}
+                                </b>
+                                {{ form.tags.help_text }}
+                                {% if form.tags.errors %}{{ form.tags.errors.as_text }} {% endif %}
+                            </label>
+                            {{ form.tags }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="no-margin {% if form.thumbnail.errors %} has-error {% endif %}">
+                            <label class="control-label" for="{{ form.thumbnail.id_for_label }}">
+                                <b {% if form.thumbnail.field.required %}class="required"{% endif %}>
+                                    {{ form.thumbnail.label }}
+                                </b>
+                                {{ form.thumbnail.help_text }}
+                                {% if form.thumbnail.errors %}{{ form.thumbnail.errors.as_text }}{% endif %}
+                            </label>
+                            {{ form.thumbnail }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group no-margin {% if form.content.errors %} has-error {% endif %}">
+                    <label class="control-label" for="{{ form.content.id_for_label }}">
+                        <b {% if form.content.field.required %}class="required"{% endif %}>
+                            {{ form.content.label }}
+                        </b>
+                        {{ form.content.help_text }}
+                        {% if form.content.errors %} {{ form.content.errors.as_text }} {% endif %}
+                    </label>
+                    {{ form.content }}
+                </div>
+
+                <div class="form-group no-margin {% if form.summary.errors %} has-error {% endif %}">
+                    <label class="control-label" for="{{ form.summary.id_for_label }}">
+                        <b {% if form.summary.field.required %}class="required"{% endif %}>
+                            {{ form.summary.label }}
+                        </b>
+                        {{ form.summary.help_text }}
+                        {% if form.summary.errors %} {{ form.summary.errors.as_text }} {% endif %}
+                    </label>
+                    {{ form.summary }}
+                </div>
+
+                <input class="btn btn-raised btn-info" style="float:right" type="submit" value="更新博客"/>
+            </form>
+
+        </div>
+
+        <div id="vmaig-side" class="col-md-4 col-lg-3 hidden-xs">
+            {% include "widgets/tags_cloud.html" %}
+            {% include "widgets/search.html" %}
+            {% include "widgets/hotest_posts.html" %}
+            {% include "widgets/latest_comments.html" %}
+        </div>
+    </div>
+{% endblock %}

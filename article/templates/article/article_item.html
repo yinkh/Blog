@@ -1,0 +1,74 @@
+{% url 'article_detail' article.id as article_detail %}
+
+<div class="all-article clearfix underline">
+    <div class="article-title clearfix" style="vertical-align: middle;">
+        <a href="{% url 'article_index' %}?category={{ article.category.id }}">
+            <div class="pre-cat">
+                <div class="btn btn-raised btn-warning" style="padding: 5px">
+                    {{ article.category }}
+                </div>
+                <div class="pre-catarrow" style="margin-top: 10px">
+                </div>
+            </div>
+        </a>
+        <h1 style="margin-top: 14px"><a href="{{ article_detail }}">{{ article.title }}</a></h1>
+
+        <span class="visible-xs-inline-block" style="margin-top:7px;">
+            {{ article.publish_time.date }}
+        </span>
+
+        <div class="article-tags">
+            {% for tag in article.get_tags %}
+                <a href="{% url 'article_index' %}?tags__icontains={{ tag }}">
+                    <span class="label label-{{ forloop.counter }}">{{ tag }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="article-content">
+        <div class="row">
+            {% if article.thumbnail %}
+                <div class="col-md-4">
+                    <figure class="thumbnail">
+                        <a href="{{ article_detail }}">
+                            <img src="{{ article.thumbnail.url }}" height="400" alt="">
+                        </a>
+                    </figure>
+                </div>
+            {% endif %}
+
+            <div class="{% if article.thumbnail %}col-md-6{% else %}col-md-10{% endif %}">
+                <p>
+                    {{ article.summary|slice:"600" }}
+                    {% if article.summary|length > 600 %}
+                        ...
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-md-2">
+                <a type="button" class="btn btn-raised btn-info"
+                   style="float:right;margin-top: 6px;margin-right: 6px" href="{{ article_detail }}">阅读全文</a>
+                {% if can_change_article %}
+                    <a type="button" class="btn btn-raised btn-warning"
+                       style="float:right;margin-top: 6px;margin-right: 6px"
+                       href="{% url 'article_update' article.id %}">编辑博客</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="article-info hidden-xs">
+        <span>
+            <span class="glyphicon glyphicon-calendar"></span>
+            {{ article.publish_time.date }}
+        </span>
+        <span>
+            <span class="glyphicon glyphicon-comment"></span>
+            {{ article.comment_article.all | length }}
+        </span>
+        <span>
+            <span class="glyphicon glyphicon-eye-open"></span>
+            {{ article.view_times }}
+        </span>
+    </div>
+</div>
