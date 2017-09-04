@@ -61,5 +61,10 @@ SMTP端口需要根据您使用的邮箱重新设置
 
     查看统计代码位于`/common/templates/common/version.html`中（要求在admin中为用户设置查看cnzz权限）
 
+- 站点名称、描述设置/SEO设置
+
+    请打开admin中的`Constance->Config`面板进行设置，设置将实时生效。
+
 ###联系方式
+
 QQ:614457662 有任何改进意见、部署错误等可QQ联系
