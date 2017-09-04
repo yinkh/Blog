@@ -1,6 +1,43 @@
+### 说明
+
+本博客由[vmaig_blog](https://github.com/billvsme/vmaig_blog)升级而来，原作者为billvsme。
+
+版本更新记录如下：
+
+- v1.0 2016/12/08
+
+	1. 支持文章仅对本人可见
+	2. 使用[summernote](https://github.com/summernote/django-summernote)作为富文本编辑器
+	3. 新增添加文章、修改文章界面
+	4. 使用[Bootstrap Material Design](https://github.com/FezVrasta/bootstrap-material-design)作为基础样式
+	5. 使用[django cleanup](https://github.com/un1t/django-cleanup)自动清理文章封面
+
+- v1.1 2017/08/15
+
+	1. 为新增文章、修改文章绑定权限
+	2. 重新设置新增文章、修改文章界面
+	3. 默认缺省页
+	4. 重写分页显示、变化逻辑，并解决换页时不保留请求参数的错误。
+	5. 使用[DjangoFilter](https://github.com/carltongibson/django-filter)进行标签、分类筛选
+	6. 用户邮箱激活功能
+	7. 站点地图
+	8. SEO支持
+	9. 使用[DjangoConstance](https://github.com/jazzband/django-constance)动态设置网站标题、SEO等内容
+	10. 新闻详情页
+
+- v1.2 2017/09/04
+
+	1. 文章详情界面中有编辑权限的用户可见编辑按钮
+	2. NavBar排序
+	3. 可修改文章发布时间
+	4. [cnzz](http://www.cnzz.com/o_index.php)统计站点访问量
+	5. 加入RSS订阅
+	6. admin站点兼容移动端
+
+
 ### 在线站点
 
-[http://blog.dreamgotech.com/](http://blog.dreamgotech.com/)
+[诗远启博客](http://blog.dreamgotech.com/)
 
 ### 配置相关
 - 替换自己的SECRET_KEY(`Blog/settings.py -> SECRET_KEY`)
@@ -65,6 +102,11 @@ SMTP端口需要根据您使用的邮箱重新设置
 
     请打开admin中的`Constance->Config`面板进行设置，设置将实时生效。
 
-###联系方式
+### 样式
+
+不喜欢MD风格的朋友直接删除`common/templates/base.html`中关于`bootstrap-material-design`的css和js即可
+
+
+### 联系方式
 
 QQ:614457662 有任何改进意见、部署错误等可QQ联系
