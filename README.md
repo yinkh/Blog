@@ -1,3 +1,7 @@
+### 在线站点
+
+[诗远启博客](http://blog.dreamgotech.com/)
+
 ### 说明
 
 本博客由[vmaig_blog](https://github.com/billvsme/vmaig_blog)升级而来，原作者为billvsme。
@@ -33,11 +37,8 @@
 	4. [cnzz](http://www.cnzz.com/o_index.php)统计站点访问量
 	5. 加入RSS订阅
 	6. admin站点兼容移动端
+	7. 修复页面无表单时火狐无法读取csrf token错误
 
-
-### 在线站点
-
-[诗远启博客](http://blog.dreamgotech.com/)
 
 ### 配置相关
 - 替换自己的SECRET_KEY(`Blog/settings.py -> SECRET_KEY`)

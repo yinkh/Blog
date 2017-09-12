@@ -5,6 +5,8 @@ from django.views.generic import TemplateView, ListView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.mixins import AccessMixin
 from django.views.generic.base import ContextMixin
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from common.utils import get_value
 
@@ -77,6 +79,11 @@ class BaseMixin(BaseContextMixin):
         except Exception as e:
             logger.error(u'[BaseMixin]加载基本信息出错 {}'.format(e))
         return super(BaseMixin, self).get_context_data(**kwargs)
+
+    @method_decorator(ensure_csrf_cookie)
+    def dispatch(self, *args, **kwargs):
+        # 使用ensure_csrf_cookie确保CSRF cookie在html内无表单时在浏览器中依旧被设置
+        return super(BaseMixin, self).dispatch(*args, **kwargs)
 
 
 class ModelPermission(AccessMixin):
