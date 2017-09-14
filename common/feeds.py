@@ -12,8 +12,12 @@ class BlogFeed(Feed):
     feed_type = Rss201rev2Feed
     link = reverse_lazy('index')
     feed_url = reverse_lazy('rss')
-    title = get_value(settings.WEBSITE_TITLE)
-    description = get_value(settings.WEBSITE_SEO_DESCRIPTION)
+
+    def title(self):
+        return get_value(settings.WEBSITE_TITLE)
+
+    def description(self):
+        return get_value(settings.WEBSITE_SEO_DESCRIPTION)
 
     def items(self):
         return Article.objects.order_by('-pk')[:10]
