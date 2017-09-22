@@ -68,10 +68,6 @@ SMTP端口需要根据您使用的邮箱重新设置
 
     	pip install -r requirements.txt -i https://pypi.douban.com/simple
 
-- 创建日志文件
-
-    在根目录创建log文件夹并在log文件夹下新建info.log文件
-
 - 同步数据库
 
 	    python manage.py makemigrations

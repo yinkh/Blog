@@ -207,6 +207,16 @@ DEFAULT_FROM_EMAIL = 'DreamGo<verify@dreamgo.tech>'
 
 # 输出日志
 LOG_PATH = os.path.join(BASE_DIR, "log/")
+DJANGO_LOG_PATH = LOG_PATH + 'django.log'
+INFO_LOG_PATH = LOG_PATH + 'info.log'
+DJANGO_LOG = os.path.dirname(DJANGO_LOG_PATH)
+INFO_LOG = os.path.dirname(INFO_LOG_PATH)
+
+if not os.path.exists(DJANGO_LOG):
+    os.mkdir(DJANGO_LOG)
+if not os.path.exists(INFO_LOG):
+    os.mkdir(INFO_LOG)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
