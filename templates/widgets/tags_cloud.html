@@ -15,7 +15,7 @@
     var fill = d3.scale.category20();
 
     //在tags数组中存放blog的tags,用于在标签云中显示
-    var tags = [ "Android","iOS","Django","RestFramework","Server","Java","Wifi","爬虫","蓝牙","智能家居",];
+    var tags = {{ tags|safe }};
 
     var words = tags.concat(tags).concat(tags);
       

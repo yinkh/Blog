@@ -21,6 +21,9 @@
                             <p>5. 加入RSS订阅</p>
                             <p>6. admin站点兼容移动端</p>
                             <p>7. 修复页面无表单时火狐无法读取csrf token错误</p>
+                            <p>8. 使用ForeignKeyWidget来快速操作博客分类</p>
+                            <p>9. 使用<a target="_blank" href="http://aehlke.github.io/tag-it/">Tag-it</a>来输入标签</p>
+                            <p>10. 动态标签云</p>
                         </li>
                         <li class="event">
                             <h3>2017/08/15 V1.1</h3>
@@ -68,15 +71,5 @@
                 </div>
             </div>
         </section>
-
-        {% if can_view_cnzz %}
-            <blockquote>
-                <script type="text/javascript">
-                    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-                    document.write(unescape("%3Cspan id='cnzz_stat_icon_1263441138'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263441138%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
-                </script>
-                <p>查看密码: 1263441138</p>
-            </blockquote>
-        {% endif %}
     </div>
 {% endblock %}

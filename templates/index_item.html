@@ -5,7 +5,7 @@
         <a href="{% url 'article_index' %}?category={{ article.category.id }}">
             <div class="pre-cat">
                 <div class="btn btn-raised btn-warning" style="padding: 5px">
-                    {{ article.category }}
+                    {{ article.category.name }}
                 </div>
                 <span class="pre-catarrow" style="margin-top: 10px"></span>
             </div>

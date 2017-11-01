@@ -1,0 +1,21 @@
+{% csrf_token %}
+{{ form.media }}
+{% for field in form %}
+    <div class="form-group">
+        <label class="col-sm-2 {% if not field.field.required %}not_required{% endif %}" style="text-align: left;">
+            {{ field.label_tag }}
+        </label>
+
+        <div class="col-sm-8">
+            {{ field }}
+
+            {% if field.help_text %}
+                <p class="help_text">{{ field.help_text|safe }}</p>
+            {% endif %}
+
+            {% if field.errors %}
+                <p style="margin-top: 6px" class="text-danger">{{ field.errors.as_text }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
