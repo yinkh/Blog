@@ -1,0 +1,16 @@
+{% extends "category_popup/base.html" %}
+
+{% block main %}
+    <div style="margin: 4px">
+        <form class="form-horizontal" enctype="multipart/form-data"
+              action="{% url 'category_popup_update' category.id %}{% if to_field %}?to_field={{ to_field }}{% endif %}"
+              method="post">
+            {% include 'widgets/form.html' %}
+            <div class="form-group">
+                <div class="col-sm-10">
+                    <input class="btn btn-raised btn-info" type="submit" value="修改分类"/>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -2,8 +2,6 @@ from django.db.models import Q
 from django.conf import settings
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
-from django.core.urlresolvers import reverse_lazy
-from django.contrib.auth.mixins import AccessMixin
 from django.views.generic.base import ContextMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -33,7 +31,7 @@ class BaseContextMixin(ContextMixin):
             kwargs['website_seo_description'] = get_value(settings.WEBSITE_SEO_DESCRIPTION)
             # 导航条
             kwargs['nav_list'] = NavBar.objects.all()
-            if hasattr(self, 'request'):
+            if hasattr(self, 'request') and hasattr(self.request, 'user'):
                 # 用户未读消息数
                 user = self.request.user
                 if user.is_authenticated():
@@ -62,7 +60,7 @@ class BaseMixin(BaseContextMixin):
                     Q(tags__icontains=search)
                 )
             articles = ArticleFilter(self.request.GET, queryset=articles).qs
-        return articles.order_by('-is_top', '-publish_time')
+        return articles.order_by('-is_top', '-update_time')
 
     def get_context_data(self, *args, **kwargs):
         try:
@@ -73,6 +71,11 @@ class BaseMixin(BaseContextMixin):
             kwargs['latest_comment_list'] = Comment.objects.filter(article__in=articles).order_by("-id")[0:6]
             # 友情链接
             kwargs['links'] = Link.objects.order_by('create_time').all()
+            # 动态标签云
+            tags = []
+            for article in kwargs['hot_article_list']:
+                tags.extend(article.get_tags())
+            kwargs['tags'] = tags
             colors = ['primary', 'success', 'info', 'warning', 'danger']
             for index, link in enumerate(kwargs['links']):
                 link.color = colors[index % len(colors)]
@@ -84,24 +87,6 @@ class BaseMixin(BaseContextMixin):
     def dispatch(self, *args, **kwargs):
         # 使用ensure_csrf_cookie确保CSRF cookie在html内无表单时在浏览器中依旧被设置
         return super(BaseMixin, self).dispatch(*args, **kwargs)
-
-
-class ModelPermission(AccessMixin):
-    action = 'view'
-    raise_exception = True
-    login_url = reverse_lazy('user_login')
-    permission_denied_message = '您无权查看此项信息，如有疑问请联系管理员。'
-
-    def dispatch(self, request, *args, **kwargs):
-        if self.action == 'add' and request.user.has_perm('article.add_article'):
-            pass
-        elif self.action == 'change' and request.user.has_perm('article.change_article'):
-            pass
-        elif self.action == 'delete' and request.user.has_perm('article.delete_article'):
-            pass
-        else:
-            return self.handle_no_permission()
-        return super(ModelPermission, self).dispatch(request, *args, **kwargs)
 
 
 class IndexView(BaseMixin, ListView):

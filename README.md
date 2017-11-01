@@ -38,6 +38,9 @@
 	5. 加入RSS订阅
 	6. admin站点兼容移动端
 	7. 修复页面无表单时火狐无法读取csrf token错误
+	8. 使用ForeignKeyWidget来快速操作博客分类
+	9. 使用[Tag-it](http://aehlke.github.io/tag-it/)来输入标签
+	10. 动态标签云
 
 
 ### 配置相关

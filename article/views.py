@@ -5,20 +5,25 @@ from django import template
 from django.template import loader
 from django.db.models import Count
 from django.core.cache import caches
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, Http404
+from django.http.response import JsonResponse
+from django.template.response import TemplateResponse
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import View, ListView, DetailView, CreateView, UpdateView
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from common.views import BaseMixin, ModelPermission
+from common.views import BaseMixin
 from common.utils import get_ip
 from notification.models import Notification
 
-from .forms import ArticleForm
+from .forms import *
 from .models import *
 from .filters import *
 
 # logger
 import logging
+
 logger = logging.getLogger("info")
 
 # 缓存
@@ -36,8 +41,9 @@ class ArticleIndexView(BaseMixin, ListView):
 
 
 # 新建博客
-class ArticleCreateView(ModelPermission, BaseMixin, CreateView):
-    action = 'add'
+class ArticleCreateView(PermissionRequiredMixin, BaseMixin, CreateView):
+    permission_required = ('article.add_article',)
+    raise_exception = True
     form_class = ArticleForm
     template_name = 'article/create.html'
 
@@ -45,15 +51,22 @@ class ArticleCreateView(ModelPermission, BaseMixin, CreateView):
         instance = form.save()
         instance.author = self.request.user
         instance.save()
+        self.success_url = reverse('article_detail', kwargs={'pk': instance.id})
         return super(ArticleCreateView, self).form_valid(form)
 
 
 # 更新博客
-class ArticleUpdateView(ModelPermission, BaseMixin, UpdateView):
-    action = 'change'
+class ArticleUpdateView(PermissionRequiredMixin, BaseMixin, UpdateView):
+    permission_required = ('article.change_article',)
+    raise_exception = True
     form_class = ArticleForm
     success_url = '/'
     template_name = 'article/update.html'
+
+    def form_valid(self, form):
+        instance = form.save()
+        self.success_url = reverse('article_detail', kwargs={'pk': instance.id})
+        return super(ArticleUpdateView, self).form_valid(form)
 
 
 class ArticleDetailView(BaseMixin, DetailView):
@@ -185,3 +198,57 @@ class CommentControl(BaseMixin, View):
         )
 
         return HttpResponse(html)
+
+
+# ------------------------------ 博客类型Popup 开始 ------------------------------
+class CategoryPopupCreateView(PermissionRequiredMixin, CreateView):
+    form_class = CategoryForm
+    template_name = 'category_popup/create.html'
+    permission_required = 'article.add_category'
+
+    def get_context_data(self, **kwargs):
+        if 'to_field' in self.request.GET:
+            kwargs['to_field'] = self.request.GET['to_field']
+        return super(CategoryPopupCreateView, self).get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        context = {'op': 'create', 'id': self.object.id, 'value': self.object.__str__()}
+        if 'to_field' in self.request.GET:
+            context['to_field'] = self.request.GET['to_field']
+        return TemplateResponse(self.request, 'category_popup/success.html', context=context)
+
+
+class CategoryPopupUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Category
+    form_class = CategoryForm
+    slug_field = 'id'
+    context_object_name = 'category'
+    template_name = 'category_popup/update.html'
+    permission_required = 'article.change_category'
+
+    def get_context_data(self, **kwargs):
+        if 'to_field' in self.request.GET:
+            kwargs['to_field'] = self.request.GET['to_field']
+        return super(CategoryPopupUpdateView, self).get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        context = {'op': 'update', 'id': self.object.id, 'value': self.object.__str__()}
+        if 'to_field' in self.request.GET:
+            context['to_field'] = self.request.GET['to_field']
+        return TemplateResponse(self.request, 'category_popup/success.html', context=context)
+
+
+class CategoryPopupDeleteView(PermissionRequiredMixin, DeleteView):
+    model = Category
+    slug_field = 'id'
+    permission_required = 'article.delete_category'
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        data = {'op': 'delete', 'id': self.object.id, 'value': self.object.__str__()}
+        self.object.delete()
+        return JsonResponse(data=data)
+
+# ------------------------------ 博客类型Popup 结束 ------------------------------

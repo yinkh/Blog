@@ -162,6 +162,18 @@
             {% include "widgets/latest_comments.html" %}
         </div>
     </div>
+{% endblock %}
 
-
+{% block js %}
+    <script src="/static/layui/layui.js"></script>
+    <script>
+        layui.use(['layer', 'laydate'], function () {
+            var layer = layui.layer, laydate = layui.laydate;
+            laydate.render({
+                elem: '#id_publish_time',
+                type: 'datetime',
+                format: 'yyyy/MM/dd HH:mm'
+            });
+        });
+    </script>
 {% endblock %}

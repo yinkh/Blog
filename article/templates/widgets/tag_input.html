@@ -1,0 +1,13 @@
+{% include "django/forms/widgets/text.html" %}
+
+<link href="/static/tag_it/css/jquery.tagit.css" rel="stylesheet" type="text/css">
+<link href="/static/tag_it/css/tagit.ui-zendesk.css" rel="stylesheet" type="text/css">
+
+<script src="/static/tag_it/js/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/tag_it/js/tag-it.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+    $(function () {
+        $('#{{ widget.attrs.id }}').tagit();
+    });
+</script>

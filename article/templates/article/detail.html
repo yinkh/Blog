@@ -47,7 +47,8 @@
                     <div class="article-title">
                         <h1>{{ article.title }} </h1>
                     </div>
-                    <div class="article-tags">
+
+                    <div class="article-tags" style="margin-top: 10px">
                         {% for tag in article.get_tags %}
                             <a href="{% url 'article_index' %}?tags__icontains={{ tag }}"
                                class="{% if forloop.counter > 4 %} hidden-xs {% endif %} ">
