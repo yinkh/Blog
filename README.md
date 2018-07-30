@@ -1,6 +1,6 @@
 ### 在线站点
 
-[诗远启博客](http://blog.dreamgotech.com/)
+[yinkh](https://www.yinkh.top/)
 
 ### 说明
 
