@@ -148,7 +148,7 @@ SUMMERNOTE_CONFIG = {
     'attachment_upload_to': uploaded_file_path,
     'attachment_require_authentication': True,
     'js_for_inplace': (
-        '/static/manage/js/summernote.js',
+        '/static/blog/js/summernote.js',
     ),
 }
 
