@@ -1,0 +1,10 @@
+# 日志、备份文件
+*.log
+*~
+
+# PyCharm
+.idea/*
+
+# 数据库脚本
+migrations/*.py
+!migrations/__init__.py

@@ -1,4 +1,4 @@
-Django==2.1.1
+Django==2.1.2
 Pillow==5.2.0
 mysqlclient==1.3.12
 django-cleanup==2.1.0
@@ -8,4 +8,3 @@ django-filter==2.0.0
 django-constance==2.3.0
 django-picklefield==1.1.0
 django-popup-field==0.1.6
-raven==6.9.0
