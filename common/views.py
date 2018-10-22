@@ -34,10 +34,8 @@ class BaseContextMixin(ContextMixin):
             if hasattr(self, 'request') and hasattr(self.request, 'user'):
                 # 用户未读消息数
                 user = self.request.user
-                if user.is_authenticated():
+                if user.is_authenticated:
                     kwargs['notification_count'] = user.to_user_notification_set.filter(is_read=0).count()
-                    kwargs['can_add_article'] = user.has_perm('article.add_article')
-                    kwargs['can_change_article'] = user.has_perm('article.change_article')
                 # 搜索框默认输入选项
                 kwargs['search'] = self.request.GET.get('search', '')
         except Exception as e:
@@ -60,7 +58,7 @@ class BaseMixin(BaseContextMixin):
                     Q(tags__icontains=search)
                 )
             articles = ArticleFilter(self.request.GET, queryset=articles).qs
-        return articles.order_by('-is_top', '-update_time')
+        return articles.order_by('-is_top', '-publish_time')
 
     def get_context_data(self, *args, **kwargs):
         try:
@@ -75,7 +73,7 @@ class BaseMixin(BaseContextMixin):
             tags = []
             for article in kwargs['hot_article_list']:
                 tags.extend(article.get_tags())
-            kwargs['tags'] = tags
+            kwargs['tags'] = list(set(tags))
             colors = ['primary', 'success', 'info', 'warning', 'danger']
             for index, link in enumerate(kwargs['links']):
                 link.color = colors[index % len(colors)]
@@ -95,6 +93,7 @@ class IndexView(BaseMixin, ListView):
     paginate_by = settings.PAGE_NUM
 
     def get_context_data(self, **kwargs):
+        kwargs['nav_index'] = 'index'
         # 轮播
         kwargs['banner_list'] = Banner.objects.all()
         return super(IndexView, self).get_context_data(**kwargs)
@@ -103,14 +102,9 @@ class IndexView(BaseMixin, ListView):
 class VersionView(BaseContextMixin, TemplateView):
     template_name = 'common/version.html'
 
-    def get_context_data(self, **kwargs):
-        # 查看站点流量
-        kwargs['can_view_cnzz'] = self.request.user.has_perm('user.view_cnzz')
-        return super(VersionView, self).get_context_data(**kwargs)
-
 
 # 400页面
-def bad_request(request):
+def bad_request(request, *args, **kwargs):
     base_context_mixin = BaseContextMixin()
     base_context_mixin.request = request
     context = base_context_mixin.get_context_data()
@@ -118,7 +112,7 @@ def bad_request(request):
 
 
 # 403页面
-def permission_denied(request):
+def permission_denied(request, *args, **kwargs):
     base_context_mixin = BaseContextMixin()
     base_context_mixin.request = request
     context = base_context_mixin.get_context_data()
@@ -126,7 +120,7 @@ def permission_denied(request):
 
 
 # 404页面
-def page_not_found(request):
+def page_not_found(request, *args, **kwargs):
     base_context_mixin = BaseContextMixin()
     base_context_mixin.request = request
     context = base_context_mixin.get_context_data()
@@ -134,7 +128,7 @@ def page_not_found(request):
 
 
 # 500页面
-def server_error(request):
+def server_error(request, *args, **kwargs):
     base_context_mixin = BaseContextMixin()
     base_context_mixin.request = request
     context = base_context_mixin.get_context_data()

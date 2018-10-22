@@ -1,19 +1,13 @@
-from django.conf.urls import url, include
+from django.urls import path, include
 from .views import *
 
-category_urlpatterns = [
-    url(r'^popup/$', CategoryPopupCreateView.as_view(), name='category_popup_create'),
-    url(r'^popup/(?P<pk>\d+)/$', CategoryPopupUpdateView.as_view(), name='category_popup_update'),
-    url(r'^popup/delete/(?P<pk>\d+)/$', CategoryPopupDeleteView.as_view(), name='category_popup_delete'),
-]
-
 urlpatterns = [
-    url(r'^$', ArticleIndexView.as_view(), name='article_index'),
-    url(r'^(?P<pk>\d+)/$', ArticleDetailView.as_view(), name='article_detail'),
-    url(r'^create/$', ArticleCreateView.as_view(), name='article_create'),
-    url(r'^update/(?P<pk>\d+)/', ArticleUpdateView.as_view(), name='article_update'),
-    url(r'^all/$', AllView.as_view(), name='article_all'),
-    url(r'^comment/(?P<pk>\d+)/$', CommentControl.as_view(), name='article_comments'),
+    path('', ArticleIndexView.as_view(), name='article_index'),
+    path('<int:pk>/', ArticleDetailView.as_view(), name='article_detail'),
+    path('create/', ArticleCreateView.as_view(), name='article_create'),
+    path('update/<int:pk>/', ArticleUpdateView.as_view(), name='article_update'),
+    path('all/', AllView.as_view(), name='article_all'),
+    path('comment/<int:pk>/', CommentControl.as_view(), name='article_comments'),
 
-    url(r'^category/', include(category_urlpatterns)),
+    CategoryPopupCRUDViewSet.urls(),
 ]

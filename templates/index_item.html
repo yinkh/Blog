@@ -65,7 +65,7 @@
             <div class="col-md-2">
                 <a type="button" class="btn btn-raised btn-info"
                    style="float:right;margin-top: 6px;margin-right: 6px" href="{{ article_detail }}">阅读全文</a>
-                {% if can_change_article %}
+                {% if perms.article.change_article %}
                     <a type="button" class="btn btn-raised btn-warning"
                        style="float:right;margin-top: 6px;margin-right: 6px"
                        href="{% url 'article_update' article.id %}">编辑博客</a>

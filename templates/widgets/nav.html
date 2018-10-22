@@ -16,14 +16,15 @@
         </div>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="{% url 'index' %}">
+
+                <li {% ifequal nav_index 'index' %}class="active"{% endifequal %}>
+                    <a href="{% url 'index' %}" >
                         <span class="glyphicon glyphicon-home"></span>
                         首页
                     </a>
                 </li>
 
-                <li>
+                <li {% ifequal nav_index 'all' %}class="active"{% endifequal %}>
                     <a href="{% url 'article_all' %}">
                         <span class="glyphicon glyphicon-globe"></span>
                         全部文章
@@ -42,7 +43,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if not request.user.is_authenticated %}
                     <li>
-                        <a href="{% url 'user_login' %}" style="cursor:pointer;">登陆</a>
+                        <a href="{% url 'user_login' %}" style="cursor:pointer;">登录</a>
                     </li>
                     <li>
                         <a href="{% url 'user_register' %}" style="cursor:pointer">注册</a>
@@ -55,7 +56,7 @@
                             <span class="badge" style="background-color: #D94600;">{{ notification_count }}</span>
                         </a>
                         <ul class="dropdown-menu navbar-right">
-                            {% if can_add_article %}
+                            {% if perms.article.add_article %}
                                 <li>
                                     <a href="{% url 'article_create' %}">
                                         <span class="glyphicon glyphicon-pencil"></span>

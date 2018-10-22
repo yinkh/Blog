@@ -2,11 +2,11 @@
 {{ form.media }}
 {% for field in form %}
     <div class="form-group">
-        <label class="col-sm-2 {% if not field.field.required %}not_required{% endif %}" style="text-align: left;">
+        <label class="col-md-2 {% if not field.field.required %}not_required{% endif %}" style="text-align: left;">
             {{ field.label_tag }}
         </label>
 
-        <div class="col-sm-8">
+        <div class="col-md-8">
             {{ field }}
 
             {% if field.help_text %}

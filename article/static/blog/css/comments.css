@@ -1,0 +1,70 @@
+#anchor-quote:target {
+    float: left;
+    margin: -100px;
+}
+
+/*评论框****************/
+.comment-list ul {
+    padding-left: 0px;
+}
+
+.comment-list ul li {
+    list-style-type: none;
+    border-top: 1px dotted #ddd;
+    padding: 10px;
+}
+
+.comment-tx {
+    float: left;
+}
+
+.comment-content {
+    padding-left: 50px;
+    word-break: break-all;
+}
+
+.comment-content h1 {
+    margin: 0px;
+    font-size: 15px;
+    padding-bottom: 10px;
+}
+
+.comment-edit {
+    padding-left: 50px;
+    margin-bottom: 20px;
+}
+
+.comment-edit textarea {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.comment-edit button {
+
+}
+
+/***********************/
+
+/*首页右侧的 comment面板样式*/
+.comment-tx {
+    padding: 2px;
+    float: left;
+}
+
+.comment-username a {
+    margin-left: 4px;
+    color: #438904;
+    font-size: 14px;
+}
+
+.comment-content {
+    word-break: break-all;
+}
+
+.comment-quote p {
+    border: 2px solid #EEE;
+    padding: 5px;
+}
+
+/***********************/
+

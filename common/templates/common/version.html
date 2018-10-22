@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title> 版本记录 | {{ website_title|default_if_none:'' }}</title>
+{% endblock %}
+
+
+{% block main %}
+    <div class="well">
+        <section id="timeline" class="timeline-outer">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <h1 class="blue-text lighten-1 header">版本更新记录</h1>
+                    <ul class="timeline">
+                        <li class="event">
+                            <h3>2018/05/08 V1.3</h3>
+                            <p>1. 加入分享功能</p>
+                            <p>2. 告示板支持Html</p>
+                            <p>3. 附件功能</p>
+                            <p>4. 加入<a target="_blank"
+                                       href="https://docs.sentry.io/clients/python/integrations/django/">
+                                Sentry </a>进行日志收集</p>
+                            <p>5. 加入<a target="_blank" href="/robots.txt"> robots.txt </a></p>
+                            <p>6. 页面加入返回顶部按钮</p>
+                            <p>7. 使用<a target="_blank" href="https://github.com/yinkh/django-popup-field">
+                                django-popup-field </a>库替换手写popup代码</p>
+                            <p>8. 升级Django版本至V2.1</p>
+                        </li>
+                        <li class="event">
+                            <h3>2017/09/04 V1.2</h3>
+                            <p>1. 文章详情界面中有编辑权限的用户可见编辑按钮</p>
+                            <p>2. NavBar排序</p>
+                            <p>3. 可修改文章发布时间</p>
+                            <p>4. <a target="_blank" href="http://www.cnzz.com/o_index.php"> cnzz </a> 统计站点访问量</p>
+                            <p>5. 加入RSS订阅</p>
+                            <p>6. admin站点兼容移动端</p>
+                            <p>7. 修复页面无表单时火狐无法读取csrf token错误</p>
+                            <p>8. 使用ForeignKeyWidget来快速操作博客分类</p>
+                            <p>9. 使用<a target="_blank" href="http://aehlke.github.io/tag-it/"> Tag-it </a>来输入标签</p>
+                            <p>10. 动态标签云</p>
+                        </li>
+                        <li class="event">
+                            <h3>2017/08/15 V1.1</h3>
+                            <p>1. 为新增文章、修改文章绑定权限</p>
+                            <p>2. 重新设置新增文章、修改文章界面</p>
+                            <p>3. 默认缺省页</p>
+                            <p>4. 重写分页显示、变化逻辑，并解决换页时不保留请求参数的错误。</p>
+                            <p>5. 使用<a target="_blank" href="https://github.com/carltongibson/django-filter">
+                                DjangoFilter </a>进行标签、分类筛选</p>
+                            <p>6. 用户邮箱激活功能</p>
+                            <p>7. 站点地图</p>
+                            <p>8. SEO支持</p>
+                            <p>9. 使用<a target="_blank" href="https://github.com/jazzband/django-constance">
+                                DjangoConstance </a>动态设置网站标题、SEO等内容</p>
+                            <p>10. 新闻详情页</p>
+                        </li>
+                        <li class="event">
+                            <h3>2016/12/08 V1.0</h3>
+                            <p>1. 支持文章仅对本人可见</p>
+                            <p>2. 使用<a target="_blank"
+                                       href="https://github.com/summernote/django-summernote"> summernote </a>
+                                作为富文本编辑器</p>
+                            <p>3. 新增添加文章、修改文章界面</p>
+                            <p>4. 使用<a target="_blank" href="https://github.com/FezVrasta/bootstrap-material-design">
+                                Bootstrap Material Design </a>作为基础样式</p>
+                            <p>5. 使用<a target="_blank" href="https://github.com/un1t/django-cleanup"> django
+                                cleanup </a>
+                                自动清理文章封面</p>
+                        </li>
+                        <li class="event">
+                            <h3>2016/03/22 VmaigBlog</h3>
+                            <p>复制<a target="_blank" href="https://github.com/billvsme/vmaig_blog"> VmaigBlog </a></p>
+                            <p>1. 文章,分类,专栏的添加，删除，修改。支持tinymce富文本编辑器。支持文章中代码高亮。</p>
+                            <p>2. 实现用户注册,登陆,修改密码,忘记重置密码。通过邮箱通知注册用户,
+                                用户忘记密码基于邮件。</p>
+                            <p>3. 实现用户头像，用户可以上传头像，然后编辑头像大小，然后保存，头像可以存在本地，
+                                也可自动保存在七牛云中（需要在setting.py 中设置好七牛的相关配置, 并修改相关代码）。</p>
+                            <p>4. 支持评论，实现了一个独立的评论系统。</p>
+                            <p>5. 首页支持显示轮播，显示最新评论，显示人气最高的文章。</p>
+                            <p>6. 首页支持显示标签云，拥有一个非常酷炫的便签云。</p>
+                            <p>7. 拥有一个动态加载的“全部文章”板块 可以显示所有文章分类，可以按照浏览数或者时间排序显示文章。</p>
+                            <p>8. 拥有一个以时间轴显示的非常酷炫的“新闻”板块，你可以每天在后台添加新闻。</p>
+                            <p>9. 支持手机浏览，对手机浏览进行了调整。</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        {% if perms.user.view_cnzz %}
+            <blockquote>
+                <script type="text/javascript">
+                    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+                    document.write(unescape("%3Cspan id='cnzz_stat_icon_1273626843'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1273626843%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+                </script>
+                <p>查看密码: 1273626843</p>
+            </blockquote>
+        {% endif %}
+    </div>
+{% endblock %}

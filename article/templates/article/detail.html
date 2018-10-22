@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    <title> {{ article.title|slice:'10' }} | {{ website_title|default_if_none:'' }}</title>
+    <title> {{ article.title }} | {{ website_title|default_if_none:'' }}</title>
 {% endblock %}
 
 {% block main %}
@@ -27,7 +27,7 @@
                             {{ article.view_times }}
                         </a>
                     </li>
-                    {% if can_change_article %}
+                    {% if perms.article.change_article %}
                         <li class="pull-right">
                             <a href="{% url 'article_update' article.id %}" class="pull-right">
                                 <span class="glyphicon glyphicon-pencil"></span>

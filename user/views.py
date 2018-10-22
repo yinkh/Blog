@@ -3,12 +3,12 @@ import base64
 from PIL import Image
 
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import *
 from django.contrib.auth import logout
-from django.core.urlresolvers import reverse_lazy
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.http import HttpResponse, HttpResponseRedirect
-
+from django.utils.http import urlquote
 from django.contrib.auth.mixins import LoginRequiredMixin
 from common.views import BaseContextMixin
 from notification.models import Notification
@@ -18,7 +18,7 @@ from .utils import *
 logger = logging.getLogger(__name__)
 
 
-# 登陆
+# 登录
 class LoginView(BaseContextMixin, FormView):
     template_name = 'user/login.html'
     form_class = LoginForm
@@ -60,7 +60,7 @@ class LoginView(BaseContextMixin, FormView):
 # 登出
 class LogoutView(View):
     def get(self, request):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             logout(request)
         return HttpResponseRedirect(reverse_lazy('index'))
 
@@ -83,7 +83,7 @@ class ForgetPasswordView(BaseContextMixin, FormView):
 
     def form_valid(self, form):
         form.save(request=self.request)
-        # 不可直接redirect,必须将该form(带有message用于提示并判断是否跳转至登陆界面)直接返回
+        # 不可直接redirect,必须将该form(带有message用于提示并判断是否跳转至登录界面)直接返回
         return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -129,7 +129,7 @@ class ChangePasswordView(BaseContextMixin, LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         form.save()
-        # 不可直接redirect,必须将该form(带有message用于提示并判断是否跳转至登陆界面)直接返回
+        # 不可直接redirect,必须将该form(带有message用于提示并判断是否跳转至登录界面)直接返回
         return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -200,3 +200,20 @@ class NotificationView(LoginRequiredMixin, BaseContextMixin, TemplateView):
             json.dumps(mydict),
             content_type="application/json"
         )
+
+
+class AttachmentView(BaseContextMixin, DetailView):
+    queryset = Attachment.objects.all()
+    slug_field = 'id'
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if settings.DEBUG:
+            response = HttpResponse(instance.file, content_type='application/force-download')
+        else:
+            response = HttpResponse(content_type='application/force-download')
+            response['X-Sendfile'] = instance.file.path
+        response['Content-Disposition'] = 'attachment; filename={}'.format(urlquote(instance.filename))
+        instance.download_times += 1
+        instance.save()
+        return response

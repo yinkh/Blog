@@ -12,7 +12,7 @@
             {% if website_welcome %}
                 <div class="well alert hidden-xs fade in">
                     <button class="close" data-dismiss="alert" type="button">&times;</button>
-                    <p style="color:cornflowerblue">{{ website_welcome }}</p>
+                    <p style="color:cornflowerblue">{{ website_welcome|safe }}</p>
                 </div>
             {% endif %}
 

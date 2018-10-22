@@ -1,17 +1,15 @@
+import ast
 import json
 import datetime
 
-from django import template
-from django.template import loader
 from django.db.models import Count
 from django.core.cache import caches
-from django.core.urlresolvers import reverse
-from django.http import HttpResponse, Http404
-from django.http.response import JsonResponse
-from django.template.response import TemplateResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, Http404
+from django.template.loader import get_template
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.context_processors import PermWrapper
+from django.views.generic import View, ListView, DetailView, CreateView, UpdateView
 
 from common.views import BaseMixin
 from common.utils import get_ip
@@ -69,6 +67,7 @@ class ArticleUpdateView(PermissionRequiredMixin, BaseMixin, UpdateView):
         return super(ArticleUpdateView, self).form_valid(form)
 
 
+# 博客详情
 class ArticleDetailView(BaseMixin, DetailView):
     template_name = 'article/detail.html'
     context_object_name = 'article'
@@ -95,6 +94,7 @@ class AllView(BaseMixin, ListView):
     paginate_by = settings.PAGE_NUM
 
     def get_context_data(self, **kwargs):
+        kwargs['nav_index'] = 'all'
         kwargs['category_list'] = Category.objects.all()
         kwargs['PAGE_NUM'] = settings.PAGE_NUM
         return super(AllView, self).get_context_data(**kwargs)
@@ -122,9 +122,8 @@ class AllView(BaseMixin, ListView):
 
         html = ""
         for article in article_list:
-            html += template.loader.get_template(
-                'article/article_item.html'
-            ).render({'article': article})
+            html += get_template('article/article_item.html').render({'article': article,
+                                                                      'perms': PermWrapper(request.user)})
 
         _dict = {"html": html, "isend": is_end}
         return HttpResponse(
@@ -136,119 +135,53 @@ class AllView(BaseMixin, ListView):
 class CommentControl(BaseMixin, View):
     def post(self, request, *args, **kwargs):
         user = request.user
-        text = request.POST.get("comment", "")
 
-        if not user.is_authenticated():
-            return HttpResponse(u"请登陆！", status=403)
-
-        pk = self.kwargs.get('pk', '')
-        try:
-            article = self.get_queryset().get(id=pk)
-        except ObjectDoesNotExist:
-            raise Http404
-
-        parent = None
-        if text.startswith('@['):
-            import ast
-            parent_str = text[1:text.find(':')]
-            parent_id = ast.literal_eval(parent_str)[1]
-            text = text[text.find(':') + 2:]
+        if user.is_authenticated:
+            pk = self.kwargs.get('pk', '')
             try:
-                parent = Comment.objects.get(pk=parent_id)
-                info = u'{}回复了你在 {} 的评论'.format(
-                    user.username,
-                    parent.article.title
-                )
-                Notification.objects.create(title=info, text=text, from_user=user, to_user=parent.user,
-                                            url='/article/{}/'.format(pk))
-            except Comment.DoesNotExist:
-                return HttpResponse(u"请勿修改评论代码！", status=403)
+                article = self.get_queryset().get(id=pk)
+            except ObjectDoesNotExist:
+                raise Http404
 
-        if not text:
-            return HttpResponse(u"请输入评论内容！", status=403)
+            text = request.POST.get("comment", "")
+            if text:
+                parent = None
+                if text.startswith('@['):
+                    parent_str = text[1:text.find(':')]
+                    parent_id = ast.literal_eval(parent_str)[1]
+                    text = text[text.find(':') + 2:]
+                    try:
+                        parent = Comment.objects.get(pk=parent_id)
+                        info = '{}回复了你在 {} 的评论'.format(user.username, parent.article.title)
+                        Notification.objects.create(title=info, text=text, from_user=user, to_user=parent.user,
+                                                    url='/article/{}/'.format(pk))
+                    except Comment.DoesNotExist:
+                        return HttpResponse("请勿修改评论代码！", status=403)
 
-        comment = Comment.objects.create(user=user, article=article, text=text, parent=parent)
+                comment = Comment.objects.create(user=user, article=article, text=text, parent=parent)
 
-        print_comment = u"<p>评论：{}</p>".format(text)
-        if parent:
-            print_comment = u"<div class=\"comment-quote\">\
-                                  <p>\
-                                      <a>@{}</a>\
-                                      {}\
-                                  </p>\
-                              </div>".format(
-                parent.user.username,
-                parent.text
-            ) + print_comment
-        # 返回当前评论
-        html = u"<li>\
-                    <div class=\"vmaig-comment-tx\">\
-                        <img src={} width=\"40\"></img>\
-                    </div>\
-                    <div class=\"vmaig-comment-content\">\
-                        <a><h1>{}</h1></a>\
-                        {}\
-                        <p>{}</p>\
-                    </div>\
-                </li>".format(
-            comment.user.get_portrait(),
-            comment.user.username,
-            print_comment,
-            datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        )
-
-        return HttpResponse(html)
-
-
-# ------------------------------ 博客类型Popup 开始 ------------------------------
-class CategoryPopupCreateView(PermissionRequiredMixin, CreateView):
-    form_class = CategoryForm
-    template_name = 'category_popup/create.html'
-    permission_required = 'article.add_category'
-
-    def get_context_data(self, **kwargs):
-        if 'to_field' in self.request.GET:
-            kwargs['to_field'] = self.request.GET['to_field']
-        return super(CategoryPopupCreateView, self).get_context_data(**kwargs)
-
-    def form_valid(self, form):
-        self.object = form.save()
-        context = {'op': 'create', 'id': self.object.id, 'value': self.object.__str__()}
-        if 'to_field' in self.request.GET:
-            context['to_field'] = self.request.GET['to_field']
-        return TemplateResponse(self.request, 'category_popup/success.html', context=context)
-
-
-class CategoryPopupUpdateView(PermissionRequiredMixin, UpdateView):
-    model = Category
-    form_class = CategoryForm
-    slug_field = 'id'
-    context_object_name = 'category'
-    template_name = 'category_popup/update.html'
-    permission_required = 'article.change_category'
-
-    def get_context_data(self, **kwargs):
-        if 'to_field' in self.request.GET:
-            kwargs['to_field'] = self.request.GET['to_field']
-        return super(CategoryPopupUpdateView, self).get_context_data(**kwargs)
-
-    def form_valid(self, form):
-        self.object = form.save()
-        context = {'op': 'update', 'id': self.object.id, 'value': self.object.__str__()}
-        if 'to_field' in self.request.GET:
-            context['to_field'] = self.request.GET['to_field']
-        return TemplateResponse(self.request, 'category_popup/success.html', context=context)
-
-
-class CategoryPopupDeleteView(PermissionRequiredMixin, DeleteView):
-    model = Category
-    slug_field = 'id'
-    permission_required = 'article.delete_category'
-
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        data = {'op': 'delete', 'id': self.object.id, 'value': self.object.__str__()}
-        self.object.delete()
-        return JsonResponse(data=data)
-
-# ------------------------------ 博客类型Popup 结束 ------------------------------
+                comment_code = "<p>评论：{}</p>".format(text)
+                if parent:
+                    comment_code = "<div class=\"comment-quote\">\
+                                         <p>\
+                                             <a>@{}</a>\
+                                             {}\
+                                         </p>\
+                                     </div>".format(parent.user.username, parent.text) + comment_code
+                # 返回当前评论
+                html = "<li>\
+                           <div class=\"comment-tx\">\
+                               <img src='{}' width=\"40\"></img>\
+                           </div>\
+                           <div class=\"comment-content\">\
+                               <a><h1>{}</h1></a>\
+                               {}\
+                               <p>{}</p>\
+                           </div>\
+                       </li>".format(comment.user.get_portrait(), comment.user.username, comment_code,
+                                     datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+                return HttpResponse(html)
+            else:
+                return HttpResponse("请输入评论内容！", status=403)
+        else:
+            return HttpResponse("请登录！", status=403)

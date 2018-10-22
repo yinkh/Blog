@@ -10,7 +10,7 @@
     </div>
     <div id="search" class="" style="padding-left: 10px;padding-right: 10px">
         <form class="form-group label-floating" role="form" method="get" action="{% url 'article_index' %}">
-            <label class="control-label" for="focusedInput2">博客名、标签、摘要</label>
+            <label class="control-label" for="focusedInput2">标题、标签、摘要、内容</label>
             <input type="text" class="form-control" id="search" name="search"
                    {% if search %}value={{ search }}{% endif %}>
         </form>
